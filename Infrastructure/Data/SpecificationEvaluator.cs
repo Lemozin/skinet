@@ -16,6 +16,21 @@ namespace Infrastructure.Data
                 query = query.Where(spec.Criteria); // could be a lambda expression i.e. p => p.Criteria == null
             }
 
+            if (spec.OrderBy != null)
+            {
+                query = query.OrderBy(spec.OrderBy); // could be a lambda expression i.e. p => p.Criteria == null
+            }
+
+            if (spec.OrderByDescending != null)
+            {
+                query = query.OrderByDescending(spec.OrderByDescending); // could be a lambda expression i.e. p => p.Criteria == null
+            }
+
+            if (spec.IsPagingEnabled)
+            {
+                query = query.Skip(spec.Skip).Take(spec.Take);
+            }
+
             query = spec.Includes.Aggregate(query, (current, include) => current.Include(include));
 
             return query;
